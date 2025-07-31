@@ -1,4 +1,4 @@
-import { concat } from "./cipher_ops";
+import { concat, compact, explode, count_consonants, suffix, prefix} from "./cipher_ops";
 import { cons, List, nil } from "./list";
 // Tests for these functions belong in cipher_test.ts
 
@@ -13,7 +13,19 @@ import { cons, List, nil } from "./list";
  */
 export const koopaLatin = (_L: List<number>): List<number> => {
   // Translate Task 1 here
-  return nil;
+  if (_L === nil) {
+    return nil;
+  }
+  else if (compact(_L) === 'mario') {
+    return nil;
+  }
+  else if (_L.kind === "cons" ? _L.hd : -1) {
+    return concat(concat(explode('k'), cons(_L.hd, nil)), concat(explode('oopa'), suffix(1n, _L)));
+  }
+  else if (count_consonants(_L) === -1n) {
+    return _L;
+  }
+  return concat(concat(suffix(1n, _L), prefix(1n, _L)), explode('koopa'));
 }
 
 /**
@@ -29,7 +41,12 @@ export const koopaLatin = (_L: List<number>): List<number> => {
  */
 export const lakituEncode = (_j: bigint): bigint => {
   // Translate Task 3 here
-  return 0n;
+  if (_j <= 0n && _j <= 12n) {
+    return _j + 13n;
+  } else if (_j >= 13n && _j <= 25n) { 
+    return _j - 13n;
+  }
+  return _j;
 };
 
 /**
@@ -43,7 +60,10 @@ export const lakituEncode = (_j: bigint): bigint => {
  */
 export const lakituCipher = (_L: List<bigint>): List<bigint> => {
   // Translate according to math defn above
-  return nil;
+  if (_L.kind === "nil") {
+    return nil;
+  } 
+  return cons(lakituEncode(_L.hd), lakituCipher(_L.tl));
 };
 
 /**
