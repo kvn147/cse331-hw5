@@ -87,3 +87,11 @@ export const suffix = <A,>(n: bigint, L: List<A>): List<A> => {
     return suffix(n - 1n, L.tl);
   }
 };
+
+/** Returns the first character of the list.*/
+export const first = <A>(L: List<A>): A => {
+  if (L.kind === "nil") {
+    throw new Error("Cannot get first of empty list");
+  }
+  return L.hd;
+};

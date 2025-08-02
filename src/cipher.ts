@@ -1,4 +1,4 @@
-import { concat, compact, explode, count_consonants, suffix, prefix} from "./cipher_ops";
+import { concat, compact, explode, count_consonants, suffix, prefix, first} from "./cipher_ops";
 import { cons, List, nil } from "./list";
 // Tests for these functions belong in cipher_test.ts
 
@@ -13,19 +13,21 @@ import { cons, List, nil } from "./list";
  */
 export const koopaLatin = (_L: List<number>): List<number> => {
   // Translate Task 1 here
+  const V = new Set([65, 69, 73, 79, 85, 97, 101, 105, 111, 117]);
+  const firstChar = first(_L);
   if (_L === nil) {
     return nil;
   }
   else if (compact(_L) === 'mario') {
     return nil;
   }
-  else if (_L.kind === "cons" ? _L.hd : -1) {
-    return concat(concat(explode('k'), cons(_L.hd, nil)), concat(explode('oopa'), suffix(1n, _L)));
+  else if (V.has(firstChar)) {
+    return concat(concat(explode('k'), cons(firstChar, nil)), concat(explode('oopa'), suffix(1n, _L)));
   }
   else if (count_consonants(_L) === -1n) {
     return _L;
   }
-  return concat(concat(suffix(1n, _L), prefix(1n, _L)), explode('koopa'));
+  return concat(concat(suffix(count_consonants(_L), _L), prefix(count_consonants(_L), _L)), explode('koopa'));
 }
 
 /**
